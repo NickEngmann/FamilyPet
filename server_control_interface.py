@@ -4,7 +4,7 @@ from firebase import firebase
 from time import gmtime, strftime, localtime
 
 # initialize Firebase Application connection
-class Atom(self):
+class Atom():
 	def __init__(self):
 		self._fb = firebase.FirebaseApplication("https://atom-pet.firebase.io.com", None)
 
