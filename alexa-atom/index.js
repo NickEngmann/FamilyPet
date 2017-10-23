@@ -1,14 +1,23 @@
 'use strict';
 var Alexa = require('alexa-sdk');
 var request = require("request");
+var firebase = require('firebase');
+var config = require('./config');
 const APP_ID = "amzn1.ask.skill.54bd94d9-34d5-47a1-8b98-54e403c97dc3";  // Your app ID.
 var slotType = '';
 var nameValue = '';
+
+firebase.initializeApp({
+    serviceAccount: config,
+    databaseURL: "https://atom-pet.firebaseio.com/"
+});
+
+var database = firebase.database();
+
 /*
 The way this code works is by making requests to firebase, updating the status of Atom so that atom can 
 execute the appropriate functions.
 It does this by:
-
 */
 
 // --------------- Helpers that build all of the responses -----------------------
@@ -107,6 +116,14 @@ function comeToMe(intent, session, callback) {
         else if (nameValue == 'Swagster'){
             slotType = 'Swagster'
         }
+        
+        let today = new Date();
+        let time = today.toLocaleString();
+        database.ref().push({
+            timestamp: time
+        },() => { 
+            repromptText = time;
+        });
         //Then call a get request now that slotType is saved. Then get your corresponding data back
         // getJSONSpecific(function(data) {
         //     if (data != "ERROR") {
@@ -177,6 +194,19 @@ function https() {
 function getJSON(callback) {
     // HTTPS request
     request.get(https(), function(error, response, body) {
+        var d = JSON.parse(body)
+        //this would be whatever necessary information you need to pull out from the JSON
+        var result = d.serial
+        if (result.length > 0) {
+            callback(result)
+        } else {
+            callback("ERROR")
+        }
+    })
+}
+function postJSON(callback) {
+    // HTTPS request
+    request.post(https(), function(error, response, body) {
         var d = JSON.parse(body)
         //this would be whatever necessary information you need to pull out from the JSON
         var result = d.serial
