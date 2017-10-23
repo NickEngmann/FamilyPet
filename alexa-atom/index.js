@@ -1,18 +1,9 @@
 'use strict';
 var Alexa = require('alexa-sdk');
-var request = require("request");
 var firebase = require('firebase');
-var config = require('./config');
 const APP_ID = "amzn1.ask.skill.54bd94d9-34d5-47a1-8b98-54e403c97dc3";  // Your app ID.
 var slotType = '';
 var nameValue = '';
-
-firebase.initializeApp({
-    serviceAccount: config,
-    databaseURL: "https://atom-pet.firebaseio.com/"
-});
-
-var database = firebase.database();
 
 /*
 The way this code works is by making requests to firebase, updating the status of Atom so that atom can 
@@ -69,35 +60,32 @@ function getWelcomeResponse(callback) {
         buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
 }
 
-function doTricks(callback) {
-    // If we wanted to initialize the session to have some attributes we could add those here.
-    const sessionAttributes = {};
-    var speechOutput = "Doing mad tricks right now"
+function doTricks(callback, database) {
     const cardTitle = 'Tricks';
-    // getJSON(function(data) {
-    //     if (data != "ERROR") {
-    //         var speechOutput = data;
-    //     }
-    //     const repromptText = data;
-    //     const shouldEndSession = false;
-    //     callback(sessionAttributes,
-    //         buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
-    // })
-    var speechOutput = 'Here is where we say what trick is happening';
-    const repromptText = 'Here is where we say what trick is happening';
-    const shouldEndSession = false;   
-    callback(sessionAttributes,
-        buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
-}
-
-//finds the specific slot requested, and then builds off of that
-function comeToMe(intent, session, callback) {
-    const cardTitle = 'Come Here';
-    const nameSlot = intent.slots.Names; //get the necessary slot information
-    let repromptText = 'doggo is on his way';
+    let repromptText = 'Atom is doing tricks';
     let sessionAttributes = {};
     const shouldEndSession = false;
-    let speechOutput = 'you know this doggo is coming to you';
+    let speechOutput = 'Those some mad tricks yo';
+
+    var today = new Date();
+    let time = today.toLocaleString();
+    database.ref("status/").update({
+        command: 'tricks',
+        timestamp: time
+    },() => { 
+        callback(sessionAttributes,
+            buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+    });
+}
+
+function comeToMe(intent, session, callback, database) {
+    const cardTitle = 'Come Here';
+    const nameSlot = intent.slots.Names; //get the necessary slot information
+    let repromptText = 'Atom is on his way';
+    let sessionAttributes = {};
+    const shouldEndSession = false;
+    let speechOutput = '';
+    //finds the specific slot requested, and then builds off of that
     if (nameSlot) {
         //if nameSlot exists, find out which name Slot was mentioned, and create the specific slotType for that nameSlot
         nameValue = nameSlot.value;
@@ -116,119 +104,43 @@ function comeToMe(intent, session, callback) {
         else if (nameValue == 'Swagster'){
             slotType = 'Swagster'
         }
-        
-        let today = new Date();
+        var today = new Date();
         let time = today.toLocaleString();
-        database.ref().push({
-            timestamp: time
+        speechOutput = 'Atom is going to '+ nameValue;
+        database.ref("status/").update({
+            command: 'comeToMe',
+            timestamp: time,
+            user: slotType
         },() => { 
-            repromptText = time;
-        });
-        //Then call a get request now that slotType is saved. Then get your corresponding data back
-        // getJSONSpecific(function(data) {
-        //     if (data != "ERROR") {
-        //         if()){
-        //             var speechOutput = ;
-        //             const repromptText = ;
-        //         }
-        //         else{
-        //             var speechOutput =;
-        //             const repromptText = ;
-        //         }
-        //     }
-        //     else {
-        //         speechOutput = "I'm not sure what you said, can you please repeat that?";
-        //         repromptText = "Please tell Atom who you would like him to go to";
-        //     }
             callback(sessionAttributes,
                 buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
-        // })
+        });
     }
     else {
         speechOutput = "I'm not sure what you said, can you please repeat that?";
         repromptText = "Please tell Atom who you would like him to go to";
         callback(sessionAttributes,
- buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+            buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
     }         
 }
 
-function cleanUp(callback) {
-    const sessionAttributes = {};
-    var speechOutput = "reached clean up"
+function cleanUp(callback, database) {
     const cardTitle = 'Clean Up';
-    const repromptText = "reached clean up";
-    // getJSONSpecific(function(data) {
-    //     if (data != "ERROR") {
-    //         if(){
-    //             var speechOutput =;
-    //             const repromptText = ;
-    //         }
-    //         else{
-    //             var speechOutput = ;
-    //             const repromptText =;
-    //         }
-    //     }
-    //     else {
-    //         speechOutput = "I'm not sure what you said, can you please repeat that?";
-    //         repromptText = "Please tell Atom who you would like him to go to";
-    //     }
+    let repromptText = 'Atom is cleaning up';
+    let sessionAttributes = {};
+    const shouldEndSession = false;
+    let speechOutput = 'Atom is cleaning up';
+
+    var today = new Date();
+    let time = today.toLocaleString();
+    database.ref("status/").update({
+        command: 'cleanUp',
+        timestamp: time
+    },() => { 
+        repromptText = time;
         callback(sessionAttributes,
             buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
-    // })
-}
-
-function http() {
-    var send = ""
-    return send
-}
-
-function https() {
-    return {
-        url: "",
-        headers: {
-            Authorization : ""
-        }
-    }
-}
-
-function getJSON(callback) {
-    // HTTPS request
-    request.get(https(), function(error, response, body) {
-        var d = JSON.parse(body)
-        //this would be whatever necessary information you need to pull out from the JSON
-        var result = d.serial
-        if (result.length > 0) {
-            callback(result)
-        } else {
-            callback("ERROR")
-        }
-    })
-}
-function postJSON(callback) {
-    // HTTPS request
-    request.post(https(), function(error, response, body) {
-        var d = JSON.parse(body)
-        //this would be whatever necessary information you need to pull out from the JSON
-        var result = d.serial
-        if (result.length > 0) {
-            callback(result)
-        } else {
-            callback("ERROR")
-        }
-    })
-}
-
-function getJSONSpecific(callback) {
-    request.get(http(), function(error, response, body) {
-        var raw = JSON.parse(body)
-        //get the necessary information from the JSON
-        var result = raw[slotType]
-        if (result > 0) {
-            callback(result);
-        } else {
-            callback("ERROR");
-        }
-    })
+    });
 }
 
 function handleSessionEndRequest(callback) {
@@ -264,7 +176,7 @@ function onLaunch(launchRequest, session, callback) {
 /**
  * Called when the user specifies an intent for this skill.
  */
-function onIntent(intentRequest, session, callback) {
+function onIntent(intentRequest, session, database, callback) {
     console.log(`onIntent requestId=${intentRequest.requestId}, sessionId=${session.sessionId}`);
 
     const intent = intentRequest.intent;
@@ -274,11 +186,11 @@ function onIntent(intentRequest, session, callback) {
     if (intentName === 'AMAZON.HelpIntent') {
         getWelcomeResponse(callback);
     } else if (intentName === 'Tricks') {
-        doTricks(callback);
+        doTricks(callback, database);
     } else if (intentName === 'ComeToMe') {
-        comeToMe(intent, session, callback);
+        comeToMe(intent, session, callback, database);
     } else if (intentName === 'CleanUp') {
-        cleanUp(callback);
+        cleanUp(callback, database);
     } else if (intentName === 'AMAZON.StopIntent' || intentName === 'AMAZON.CancelIntent') {
         handleSessionEndRequest(callback);
     } else {
@@ -303,16 +215,13 @@ exports.handler = (event, context, callback) => {
     try {
         console.log(`event.session.application.applicationId=${event.session.application.applicationId}`);
 
-        /**
-         * Uncomment this if statement and populate with your skill's application ID to
-         * prevent someone else from configuring a skill that sends requests to this function.
-         */
-        /*
-        if (event.session.application.applicationId !== 'amzn1.echo-sdk-ams.app.[unique-value-here]') {
-             callback('Invalid Application ID');
-        }
-        */
+        context.callbackWaitsForEmptyEventLoop = false;  //<---Important
+        var config = require('./config.json');     
 
+        if(firebase.apps.length == 0) {   // <---Important!!! In lambda, it will cause double initialization.
+            firebase.initializeApp(config);
+        }
+        var database = firebase.database();
         if (event.session.new) {
             onSessionStarted({ requestId: event.request.requestId }, event.session);
         }
@@ -325,7 +234,7 @@ exports.handler = (event, context, callback) => {
                 });
         } else if (event.request.type === 'IntentRequest') {
             onIntent(event.request,
-                event.session,
+                event.session, database,
                 (sessionAttributes, speechletResponse) => {
                     callback(null, buildResponse(sessionAttributes, speechletResponse));
                 });
