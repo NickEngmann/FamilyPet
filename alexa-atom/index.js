@@ -153,9 +153,7 @@ function handleSessionEndRequest(callback) {
     callback({}, buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
 }
 
-
 // --------------- Events -----------------------
-
 /**
  * Called when the session starts.
  */
