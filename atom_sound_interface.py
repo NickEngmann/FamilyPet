@@ -2,10 +2,10 @@
 
 
 """
-This is the command interface. Connects to the sound, wifi, and drain train interfaces
+Sound interface. Plays audio to make Atom more lifelike
 """
 
 # initialize Firebase Application connection
-class Command():
+class Sound():
     def __init__(self):
         pass
