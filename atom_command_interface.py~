@@ -1,0 +1,24 @@
+#! /usr/bin/python3
+
+from firebase import firebase
+from time import gmtime, strftime, localtime
+
+"""
+This is the command interface. Connects to the sound, wifi, and drain train interfaces
+"""
+
+# initialize Firebase Application connection
+class Atom():
+<<<<<<< HEAD:server_control_interface.py
+	def __init__(self):
+=======
+	def __init__(self, location=None, user=None, command=None):
+>>>>>>> 43d659cc064e839d5b9d9c9cc8a2c9080a5ba870:atom_command_interface.py
+		self._fb = firebase.FirebaseApplication("https://atom-pet.firebaseio.com", None)
+
+		# Initial State
+		time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+		data = {'state':'initialize', 'location':location, 'timestamp':time ,'user':user, 'command': command}
+		result = self._fb.patch("/status", data)
+
+		self._state = data
