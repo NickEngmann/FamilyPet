@@ -67,6 +67,7 @@ class StateMachine(object):
         """ Initialize the components. """
         self._atom_command_interface = acmdi.Atom()
         # Start with a default state.
+        self._state._atom_state = self._atom_command_interface
         self._state = Standby()
 
     def on_event(self, event):
@@ -77,4 +78,11 @@ class StateMachine(object):
         """
 
         # The next state will be the result of the on_event function.
-        self._state = self._state.on_event(event)
+        next_state = self._state.on_event(event)
+        # pass atom state between states
+        next_state._atom_state = self._state._atom_state
+        # pass atom command interface reference
+        next_state._atom_command_interface = self._state._atom_command_interface
+
+        # passes necessary information to the next state
+        self._state = next_state
