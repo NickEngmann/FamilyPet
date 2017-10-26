@@ -7,4 +7,5 @@ This is the command interface. Connects to the sound, wifi, and drain train inte
 
 # initialize Firebase Application connection
 class Command():
-	def __init__(self):
+    def __init__(self):
+        pass

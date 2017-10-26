@@ -1,6 +1,5 @@
 #! /usr/bin/python3
 
-
 """
 Sound interface. Plays audio to make Atom more lifelike
 """

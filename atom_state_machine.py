@@ -1,11 +1,17 @@
 #! /usr/bin/python3
  
 import atom_command_interface as acmdi
+from firebase import firebase
 
 """
 The State machine> Takes inputs and outputs to necessary state depending
 on the inputs
 """
+def resetStatus():
+    fb = firebase.FirebaseApplication("https://atom-pet.firebaseio.com", None)
+    data = {'command':'standby'}
+    result = fb.patch("/status", data)
+
 
 class State(object):
     """
@@ -34,28 +40,72 @@ class State(object):
         """
         return self.__class__.__name__
 
+
 class Standby(State):
     """
     The state which indicates that there are limited device capabilities.
     """
 
     def on_event(self, event):
-        if event == 'comeToMe':
-            return Active()
-
+        if event['command'] == 'tricks':
+            return Tricks()
+        elif event['command'] == 'comeToMe':
+            return comeToMe()
+        elif event['command'] == 'cleanUp':
+            return cleanUp()
+        elif event['command'] == 'speak':
+            return speak()
         return self
 
 
-class Active(State):
+class Tricks(State):
     """
     The state which indicates that there are no limitations on device
     capabilities.
     """
 
     def on_event(self, event):
-        if event == 'standby':
-            return Standby()
-        return self
+        # Do tricks, reset to default state and then return to standby
+        print('Atom is doing some super cool tricks')
+        resetStatus()
+        return Standby()
+
+
+class comeToMe(State):
+    """
+    The state which indicates that there are no limitations on device
+    capabilities.
+    """
+
+    def on_event(self, event):
+        # Do comeTome, reset to default state and then return to standby
+        print('Atom is moving towards you')
+        return Standby()
+
+
+class cleanUp(State):
+    """
+    The state which indicates that there are no limitations on device
+    capabilities.
+    """
+
+    def on_event(self, event):
+        # Do cleanUp, reset to default state and then return to standby
+        print('Atom is cleaning up')
+        return Standby()
+
+
+class speak(State):
+    """
+    The state which indicates that there are no limitations on device
+    capabilities.
+    """
+
+    def on_event(self, event):
+        # Do speak, reset to default state and then return to standby
+        print('Atom is speaking')
+        return Standby()
+
 
 class StateMachine(object):
     """ 
