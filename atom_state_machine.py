@@ -80,6 +80,7 @@ class comeToMe(State):
     def on_event(self, event):
         # Do comeTome, reset to default state and then return to standby
         print('Atom is moving towards you')
+        resetStatus()
         return Standby()
 
 
@@ -92,6 +93,7 @@ class cleanUp(State):
     def on_event(self, event):
         # Do cleanUp, reset to default state and then return to standby
         print('Atom is cleaning up')
+        resetStatus()
         return Standby()
 
 
@@ -104,6 +106,7 @@ class speak(State):
     def on_event(self, event):
         # Do speak, reset to default state and then return to standby
         print('Atom is speaking')
+        resetStatus()
         return Standby()
 
 
