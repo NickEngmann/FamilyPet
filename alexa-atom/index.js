@@ -53,7 +53,7 @@ function getWelcomeResponse(callback) {
     // If the user either does not reply to the welcome message or says something that is not
     // understood, they will be prompted again with this text.
     const repromptText = 'Atom is awake, ' +
-        'What do you want him to do';
+        'What do you want him to do?';
     const shouldEndSession = false;
 
     callback(sessionAttributes,
@@ -137,7 +137,6 @@ function cleanUp(callback, database) {
         command: 'cleanUp',
         timestamp: time
     },() => { 
-        repromptText = time;
         callback(sessionAttributes,
             buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
     });
@@ -156,7 +155,6 @@ function goHome(callback, database) {
         command: 'goHome',
         timestamp: time
     },() => { 
-        repromptText = time;
         callback(sessionAttributes,
             buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
     });
@@ -175,7 +173,6 @@ function speak(callback, database) {
         command: 'speak',
         timestamp: time
     },() => { 
-        repromptText = time;
         callback(sessionAttributes,
             buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
     });
