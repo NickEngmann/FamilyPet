@@ -306,6 +306,6 @@ data['remote opcodes'] = REMOTE_OPCODES
 with open("config.json", 'w') as outfile:
     try:
         json.dump(data, outfile, sort_keys = False, indent = 4)
-        print 'saved config'
+        print ('saved config')
     except ValueError, e:
-        print 'shits fucked up yo'
+        print ('shits fucked up yo')
