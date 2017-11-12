@@ -1,6 +1,7 @@
 #! /usr/bin/python3
  
 import atom_command_interface as acmdi
+from atom_drive_train import creat2api
 
 """
 The State machine> Takes inputs and outputs to necessary state depending
@@ -66,6 +67,18 @@ class StateMachine(object):
     def __init__(self):
         """ Initialize the components. """
         self._atom_command_interface = acmdi.Atom()
+
+        """
+        Create an instance of Create2. This will automatically try to connect to your
+        Roomba over serial
+        """
+
+        self._drive = create2api.Create2()
+        #Start the Create2
+        self._drive.start()
+        #Put the Create2 into 'safe' mode so we can drive it
+        self._drive.safe()
+
         # Start with a default state.
         self._state = Standby()
 
