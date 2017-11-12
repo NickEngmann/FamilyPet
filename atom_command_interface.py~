@@ -17,6 +17,4 @@ class Command():
         self._drive.start()
         #Put the Create2 into 'safe' mode so we can drive it
         self._drive.safe()
-        
-    def driveTrain(self):
         return self._drive
