@@ -3,7 +3,8 @@
 import atom_command_interface as acmdi
 
 from firebase import firebase
-
+from random import *
+ 
 """
 The State machine> Takes inputs and outputs to necessary state depending
 on the inputs
@@ -56,6 +57,8 @@ class Standby(State):
             return cleanUp()
         elif event['command'] == 'speak':
             return speak()
+        elif event['command'] == 'goCharge':
+            return goCharge()
         return self
 
 
@@ -68,6 +71,8 @@ class Tricks(State):
     def on_event(self, event):
         # Do tricks, reset to default state and then return to standby
         print('Atom is doing some super cool tricks')
+        x = randint(1, 4)    # Pick a random number between 1 and 4
+        self._atom_command_interface.doTricks(x)
         resetStatus()
         return Standby()
 
@@ -81,9 +86,22 @@ class comeToMe(State):
     def on_event(self, event):
         # Do comeTome, reset to default state and then return to standby
         print('Atom is moving towards you')
+        self._atom_command_interface.goCharge()
         resetStatus()
         return Standby()
 
+class goCharge(State):
+    """
+    The state which indicates that there are no limitations on device
+    capabilities.
+    """
+
+    def on_event(self, event):
+        # Do goCharge, reset to default state and then return to standby
+        print('Atom is moving towards its charger')
+        self._atom_command_interface.goCharge()
+        resetStatus()
+        return Standby()
 
 class cleanUp(State):
     """
@@ -94,6 +112,7 @@ class cleanUp(State):
     def on_event(self, event):
         # Do cleanUp, reset to default state and then return to standby
         print('Atom is cleaning up')
+        self._atom_command_interface.cleanUp()
         resetStatus()
         return Standby()
 
