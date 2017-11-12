@@ -1,7 +1,6 @@
 # FamilyPet
 The Ortega and Engmann households family pet. A hacked and redesigned Roomba to support Alexa command control, orientation and owner tracking, and environment control.
 
-
 # Installation
 
 ```bash
@@ -68,3 +67,13 @@ Atom whats good my ninja </br>
 Atom how is it going Atom </br>
 Atom how was your day </br>
 Atom do you have anything to tell me </br>
+
+# Want to make your own shell for your Roomba?
+
+## Adjusted 3D Print files
+TODO
+
+## Instructions on raspberry pi board assembly
+http://www.irobot.com/~/media/MainSite/PDFs/About/STEM/Create/Create_2_Serial_to_33V_Logic.pdf
+http://www.irobotweb.com/-/media/MainSite/PDFs/About/STEM/Create/RaspberryPi_Tutorial.pdf?la=en
+
