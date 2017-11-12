@@ -1,20 +1,20 @@
 #! /usr/bin/python3
  
 import atom_state_machine as astm
+import atom_alexa_interface as aai
 import time
-from firebase import firebase
+
 
 """
 This is the main, establishes checker and updates the state machine 
 """
 
 
+atom_alexa = aai.Alexa()
+atom_state = astm.StateMachine(atom_alexa._state)
 
-atom_state = astm.StateMachine()
-fb = firebase.FirebaseApplication("https://atom-pet.firebaseio.com", None)
+while(1):
+    status = atom_alexa.update_state()
+    if status['command'] != 'standby':
+        atom_state.on_event(status)
 
-while(1)
-    state = fb.get('/status', None)
-    print state
-    atom_state.on_event(state)
-    time.sleep(1000) # check every second

@@ -1,12 +1,18 @@
 #! /usr/bin/python3
  
 import atom_command_interface as acmdi
-from atom_drive_train import creat2api
+
+from firebase import firebase
 
 """
 The State machine> Takes inputs and outputs to necessary state depending
 on the inputs
 """
+def resetStatus():
+    fb = firebase.FirebaseApplication("https://atom-pet.firebaseio.com", None)
+    data = {'command':'standby'}
+    result = fb.patch("/status", data)
+
 
 class State(object):
     """
@@ -15,7 +21,7 @@ class State(object):
     """
 
     def __init__(self):
-        print 'Processing current state:', str(self)
+        print ('Processing current state:', str(self))
 
     def on_event(self, event):
         """
@@ -35,28 +41,75 @@ class State(object):
         """
         return self.__class__.__name__
 
+
 class Standby(State):
     """
     The state which indicates that there are limited device capabilities.
     """
 
     def on_event(self, event):
-        if event == 'comeToMe':
-            return Active()
-
+        if event['command'] == 'tricks':
+            return Tricks()
+        elif event['command'] == 'comeToMe':
+            return comeToMe()
+        elif event['command'] == 'cleanUp':
+            return cleanUp()
+        elif event['command'] == 'speak':
+            return speak()
         return self
 
 
-class Active(State):
+class Tricks(State):
     """
     The state which indicates that there are no limitations on device
     capabilities.
     """
 
     def on_event(self, event):
-        if event == 'standby':
-            return Standby()
-        return self
+        # Do tricks, reset to default state and then return to standby
+        print('Atom is doing some super cool tricks')
+        resetStatus()
+        return Standby()
+
+
+class comeToMe(State):
+    """
+    The state which indicates that there are no limitations on device
+    capabilities.
+    """
+
+    def on_event(self, event):
+        # Do comeTome, reset to default state and then return to standby
+        print('Atom is moving towards you')
+        resetStatus()
+        return Standby()
+
+
+class cleanUp(State):
+    """
+    The state which indicates that there are no limitations on device
+    capabilities.
+    """
+
+    def on_event(self, event):
+        # Do cleanUp, reset to default state and then return to standby
+        print('Atom is cleaning up')
+        resetStatus()
+        return Standby()
+
+
+class speak(State):
+    """
+    The state which indicates that there are no limitations on device
+    capabilities.
+    """
+
+    def on_event(self, event):
+        # Do speak, reset to default state and then return to standby
+        print('Atom is speaking')
+        resetStatus()
+        return Standby()
+
 
 class StateMachine(object):
     """ 
@@ -64,24 +117,19 @@ class StateMachine(object):
     high level.
     """
 
-    def __init__(self):
+    def __init__(self, state):
         """ Initialize the components. """
         self._atom_command_interface = acmdi.Atom()
 
-        """
-        Create an instance of Create2. This will automatically try to connect to your
-        Roomba over serial
-        """
-
-        self._drive = create2api.Create2()
-        #Start the Create2
-        self._drive.start()
-        #Put the Create2 into 'safe' mode so we can drive it
-        self._drive.safe()
+        # Pass the defaults through
+        self._state._atom_command_interface = acmdi.Command()
+        self._state._atom_state = state
 
         # Start with a default state.
         self._state = Standby()
 
+
+ 
     def on_event(self, event):
         """
         This is the bread and butter of the state machine. Incoming events are
@@ -90,4 +138,11 @@ class StateMachine(object):
         """
 
         # The next state will be the result of the on_event function.
-        self._state = self._state.on_event(event)
+        next_state = self._state.on_event(event)
+        # pass atom state between states
+        next_state._atom_state = self._state._atom_state
+        # pass atom command interface reference
+        next_state._atom_command_interface = self._state._atom_command_interface
+
+        # passes necessary information to the next state
+        self._state = next_state
