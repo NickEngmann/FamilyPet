@@ -2,6 +2,7 @@
 import atom_sound_interface as asi
 import atom_drive_train as adt
 import time
+from pygame import mixer
 """
 This is the command interface. Connects to the sound, wifi, and drain train interfaces
 """
@@ -18,11 +19,12 @@ class Command():
         self._drive.start()
         #Put the Create2 into 'safe' mode so we can drive it
         self._drive.safe()
+        mixer.init()
         
     def cleanUp(self):
         self._drive.clean()
 
-    def goCharge(self):
+    def goHome(self):
         self._drive.seek_dock()
 	
     def doTricks(self, trick):
@@ -48,4 +50,8 @@ class Command():
             time.sleep(4)
             self._drive.turn_counter_clockwise(0)
         elif trick == 4 :
-            self._drive.play(1)
+            self._drive.play(2)
+
+    def speak(self, filenumber):
+        mixer.music.load('/home/pi/Desktop/FamilyPet/audio/'+ str(filenumber) +'.mp3')
+        mixer.music.play()

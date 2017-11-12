@@ -19,7 +19,7 @@ class Command():
         self._drive.start()
         #Put the Create2 into 'safe' mode so we can drive it
         self._drive.safe()
-        self._sound = mixer.init()
+        mixer.init()
         
     def cleanUp(self):
         self._drive.clean()
@@ -52,6 +52,6 @@ class Command():
         elif trick == 4 :
             self._drive.play(2)
 
-    def speak(self):
-        self._sound.music.load('/home/pi/Desktop/FamilyPet/audio/1.mp3')
-        self._sound.music.play()
+    def speak(self, filenumber):
+        mixer.music.load('/home/pi/Desktop/FamilyPet/audio/'+ str(filenumber) +'.mp3')
+        mixer.music.play()

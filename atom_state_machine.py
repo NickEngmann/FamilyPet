@@ -73,6 +73,7 @@ class Tricks(State):
         print('Atom is doing some super cool tricks')
         x = randint(1, 4)    # Pick a random number between 1 and 4
         self._atom_command_interface.doTricks(x)
+        self._atom_command_interface.speak(x)
         resetStatus()
         return Standby()
 
@@ -86,6 +87,8 @@ class comeToMe(State):
     def on_event(self, event):
         # Do comeTome, reset to default state and then return to standby
         print('Atom is moving towards you')
+        x = randint(1, 26)    # Pick a random number between 1 and 26
+        self._atom_command_interface.speak(x)
         # TODO: Add in Danny's API to find and move towards
         resetStatus()
         return Standby()
@@ -100,6 +103,8 @@ class goHome(State):
         # Do goHome, reset to default state and then return to standby
         print('Atom is moving towards its charger')
         self._atom_command_interface.goHome()
+        x = randint(1, 26)    # Pick a random number between 1 and 26
+        self._atom_command_interface.speak(x)
         resetStatus()
         return Standby()
 
@@ -113,6 +118,8 @@ class cleanUp(State):
         # Do cleanUp, reset to default state and then return to standby
         print('Atom is cleaning up')
         self._atom_command_interface.cleanUp()
+        x = randint(1, 26)    # Pick a random number between 1 and 26
+        self._atom_command_interface.speak(x)
         resetStatus()
         return Standby()
 
@@ -126,7 +133,8 @@ class speak(State):
     def on_event(self, event):
         # Do speak, reset to default state and then return to standby
         print('Atom is speaking')
-        self._atom_command_interface.speak()
+        x = randint(1, 26)    # Pick a random number between 1 and 26
+        self._atom_command_interface.speak(x)
         resetStatus()
         return Standby()
 
@@ -144,6 +152,8 @@ class StateMachine(object):
         self._state = Standby()
         # Pass the defaults through
         self._state._atom_command_interface = acmdi.Command()
+        x = randint(1, 26)    # Pick a random number between 1 and 26
+        self._state._atom_command_interface.speak(x)
         self._state._atom_state = state
 
  

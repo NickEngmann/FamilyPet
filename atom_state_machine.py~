@@ -3,7 +3,8 @@
 import atom_command_interface as acmdi
 
 from firebase import firebase
-
+from random import *
+ 
 """
 The State machine> Takes inputs and outputs to necessary state depending
 on the inputs
@@ -56,6 +57,8 @@ class Standby(State):
             return cleanUp()
         elif event['command'] == 'speak':
             return speak()
+        elif event['command'] == 'goHome':
+            return goHome()
         return self
 
 
@@ -68,6 +71,9 @@ class Tricks(State):
     def on_event(self, event):
         # Do tricks, reset to default state and then return to standby
         print('Atom is doing some super cool tricks')
+        x = randint(1, 4)    # Pick a random number between 1 and 4
+        self._atom_command_interface.doTricks(x)
+        self._atom_command_interface.speak(x)
         resetStatus()
         return Standby()
 
@@ -81,9 +87,26 @@ class comeToMe(State):
     def on_event(self, event):
         # Do comeTome, reset to default state and then return to standby
         print('Atom is moving towards you')
+        x = randint(1, 26)    # Pick a random number between 1 and 26
+        self._atom_command_interface.speak(x)
+        # TODO: Add in Danny's API to find and move towards
         resetStatus()
         return Standby()
 
+class goHome(State):
+    """
+    The state which indicates that there are no limitations on device
+    capabilities.
+    """
+
+    def on_event(self, event):
+        # Do goHome, reset to default state and then return to standby
+        print('Atom is moving towards its charger')
+        self._atom_command_interface.goHome()
+        x = randint(1, 26)    # Pick a random number between 1 and 26
+        self._atom_command_interface.speak(x)
+        resetStatus()
+        return Standby()
 
 class cleanUp(State):
     """
@@ -94,6 +117,9 @@ class cleanUp(State):
     def on_event(self, event):
         # Do cleanUp, reset to default state and then return to standby
         print('Atom is cleaning up')
+        self._atom_command_interface.cleanUp()
+        x = randint(1, 26)    # Pick a random number between 1 and 26
+        self._atom_command_interface.speak(x)
         resetStatus()
         return Standby()
 
@@ -107,6 +133,8 @@ class speak(State):
     def on_event(self, event):
         # Do speak, reset to default state and then return to standby
         print('Atom is speaking')
+        x = randint(1, 26)    # Pick a random number between 1 and 26
+        self._atom_command_interface.speak(x)
         resetStatus()
         return Standby()
 
@@ -119,13 +147,13 @@ class StateMachine(object):
 
     def __init__(self, state):
         """ Initialize the components. """
-        self._atom_command_interface = acmdi.Command()
 
         # Start with a default state.
         self._state = Standby()
-
         # Pass the defaults through
-        self._state._atom_command_interface._drive = self._atom_command_interface._drive
+        self._state._atom_command_interface = acmdi.Command()
+        x = randint(1, 26)    # Pick a random number between 1 and 26
+        self._state._atom_command_interface.speak(x)
         self._state._atom_state = state
 
  
