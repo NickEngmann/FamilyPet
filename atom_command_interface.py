@@ -20,6 +20,7 @@ class Command():
         #Put the Create2 into 'safe' mode so we can drive it
         self._drive.safe()
         mixer.init()
+        mixer.music.set_volume(1)
         
     def cleanUp(self):
         self._drive.clean()
