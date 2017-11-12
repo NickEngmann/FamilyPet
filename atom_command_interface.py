@@ -22,7 +22,7 @@ class Command():
     def cleanUp(self):
         self._drive.clean()
 
-    def goCharge(self):
+    def goHome(self):
         self._drive.seek_dock()
 	
     def doTricks(self, trick):
@@ -48,4 +48,7 @@ class Command():
             time.sleep(4)
             self._drive.turn_counter_clockwise(0)
         elif trick == 4 :
-            self._drive.play(1)
+            self._drive.play(2)
+
+    def speak(self):
+        self._drive.play(2)

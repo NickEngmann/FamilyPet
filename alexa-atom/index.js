@@ -143,6 +143,44 @@ function cleanUp(callback, database) {
     });
 }
 
+function goHome(callback, database) {
+    const cardTitle = 'Going Home';
+    let repromptText = 'Atom is going home';
+    let sessionAttributes = {};
+    const shouldEndSession = false;
+    let speechOutput = 'Atom is going home';
+
+    var today = new Date();
+    let time = today.toLocaleString();
+    database.ref("status/").update({
+        command: 'goHome',
+        timestamp: time
+    },() => { 
+        repromptText = time;
+        callback(sessionAttributes,
+            buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+    });
+}
+
+function speak(callback, database) {
+    const cardTitle = 'Speak';
+    let repromptText = 'Atom is talking';
+    let sessionAttributes = {};
+    const shouldEndSession = false;
+    let speechOutput = 'Atom is talking';
+
+    var today = new Date();
+    let time = today.toLocaleString();
+    database.ref("status/").update({
+        command: 'speak',
+        timestamp: time
+    },() => { 
+        repromptText = time;
+        callback(sessionAttributes,
+            buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+    });
+}
+
 function handleSessionEndRequest(callback) {
     //Saying Goodbye once a session ends
     const cardTitle = 'Session Ended';
@@ -189,6 +227,10 @@ function onIntent(intentRequest, session, database, callback) {
         comeToMe(intent, session, callback, database);
     } else if (intentName === 'CleanUp') {
         cleanUp(callback, database);
+    } else if (intentName === 'GoHome') {
+        goHome(callback, database);
+    } else if (intentName === 'Speak') {
+        speak(callback, database);
     } else if (intentName === 'AMAZON.StopIntent' || intentName === 'AMAZON.CancelIntent') {
         handleSessionEndRequest(callback);
     } else {

@@ -57,8 +57,8 @@ class Standby(State):
             return cleanUp()
         elif event['command'] == 'speak':
             return speak()
-        elif event['command'] == 'goCharge':
-            return goCharge()
+        elif event['command'] == 'goHome':
+            return goHome()
         return self
 
 
@@ -86,20 +86,20 @@ class comeToMe(State):
     def on_event(self, event):
         # Do comeTome, reset to default state and then return to standby
         print('Atom is moving towards you')
-        self._atom_command_interface.goCharge()
+        # TODO: Add in Danny's API to find and move towards
         resetStatus()
         return Standby()
 
-class goCharge(State):
+class goHome(State):
     """
     The state which indicates that there are no limitations on device
     capabilities.
     """
 
     def on_event(self, event):
-        # Do goCharge, reset to default state and then return to standby
+        # Do goHome, reset to default state and then return to standby
         print('Atom is moving towards its charger')
-        self._atom_command_interface.goCharge()
+        self._atom_command_interface.goHome()
         resetStatus()
         return Standby()
 
@@ -126,6 +126,7 @@ class speak(State):
     def on_event(self, event):
         # Do speak, reset to default state and then return to standby
         print('Atom is speaking')
+        self._atom_command_interface.speak()
         resetStatus()
         return Standby()
 
