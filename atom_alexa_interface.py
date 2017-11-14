@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 
 from firebase import firebase
 from time import gmtime, strftime, localtime
