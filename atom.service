@@ -1,0 +1,13 @@
+[Unit]
+Description=Atom Service
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+WorkingDirectory=/home/pi/Desktop/FamilyPet/
+Type=idle
+User=pi
+ExecStart=/usr/bin/python /home/pi/Desktop/FamilyPet/atom_controller_interface.py > /home/pi/Desktop/atom.log 2>&1
+
+[Install]
+WantedBy=multi-user.target
