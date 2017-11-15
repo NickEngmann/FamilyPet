@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
  
 import atom_state_machine as astm
 import atom_alexa_interface as aai

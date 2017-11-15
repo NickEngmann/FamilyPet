@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 import atom_sound_interface as asi
 import atom_drive_train as adt
 import time
@@ -21,7 +21,7 @@ class Command():
         # Put the Create2 into 'safe' mode so we can drive it
         self._drive.safe()
         mixer.init()
-        mixer.music.set_volume(1)
+        mixer.music.set_volume(1.0)
         
     def cleanUp(self):
         # Inities the Clean Command

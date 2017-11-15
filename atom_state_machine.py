@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
  
 import atom_command_interface as acmdi
 
