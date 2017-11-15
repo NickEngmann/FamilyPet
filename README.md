@@ -31,13 +31,10 @@ Atom clean up </br>
 Atom clean this room </br>
 Atom clean this up </br>
 Atom clean now </br>
-Atom clean please </br>
 Atom clean </br>
 
 <b>Tricks:</b> </br>
 Atom do tricks </br>
-Atom impress me </br>
-Atom show me what you got </br>
 Atom be fancy </br>
 Atom do tricks </br>
 
@@ -45,27 +42,17 @@ Atom do tricks </br>
 Atom go home and charge </br>
 Atom go charge </br>
 Atom you are finished go home to charge </br>
-Atom thanks you are done </br>
 Atom go to your charging station </br>
 Atom find your charging station </br>
-Atom go back to your home </br>
 Atom go back to your charging station </br>
-Atom head back to your house </br>
 Atom head back to your charging station </br>
-Atom find your house </br>
 Atom go charge yourself </br>
-Atom its time to head back home </br>
-Atom its time to charge yourself </br>
-Atom we are done </br>
 Atom go charge </br>
 
 <b>Speak:</b> </br>
 Atom tell me something </br>
 Atom speak </br>
-Atom what do you have to tell me </br>
-Atom whats good my ninja </br>
 Atom how is it going Atom </br>
-Atom how was your day </br>
 Atom do you have anything to tell me </br>
 
 # Want to make your own shell for your Roomba?

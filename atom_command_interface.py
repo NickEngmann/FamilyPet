@@ -14,21 +14,26 @@ class Command():
         Create an instance of Create2. This will automatically try to connect to your
         Roomba over serial
         """
+        # Init instance of Create2 Controller
         self._drive = adt.Create2()
-        #Start the Create2
+        # Start the Create2
         self._drive.start()
-        #Put the Create2 into 'safe' mode so we can drive it
+        # Put the Create2 into 'safe' mode so we can drive it
         self._drive.safe()
         mixer.init()
         mixer.music.set_volume(1)
         
     def cleanUp(self):
+        # Inities the Clean Command
+        self._drive.stop()
         self._drive.clean()
 
     def goHome(self):
+        self._drive.stop()
         self._drive.seek_dock()
 	
     def doTricks(self, trick):
+        self._drive.stop()
         if trick == 1:
             # Tell the Create2 to drive straight forward at a speed of 100 mm/s
             self._drive.drive_straight(100)
@@ -54,5 +59,6 @@ class Command():
             self._drive.play(2)
 
     def speak(self, filenumber):
+        # select random audiofile to speak from
         mixer.music.load('/home/pi/Desktop/FamilyPet/audio/'+ str(filenumber) +'.mp3')
         mixer.music.play()
