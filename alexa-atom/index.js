@@ -62,10 +62,10 @@ function getWelcomeResponse(callback) {
 
 function doTricks(callback, database) {
     const cardTitle = 'Tricks';
-    let repromptText = 'Atom is doing tricks';
+    let repromptText = 'Those some mad tricks';
     let sessionAttributes = {};
     const shouldEndSession = false;
-    let speechOutput = 'Those some mad tricks yo';
+    let speechOutput = '';
 
     var today = new Date();
     let time = today.toLocaleString();
@@ -126,10 +126,10 @@ function comeToMe(intent, session, callback, database) {
 
 function cleanUp(callback, database) {
     const cardTitle = 'Clean Up';
-    let repromptText = 'Atom is cleaning up';
+    let repromptText = '';
     let sessionAttributes = {};
     const shouldEndSession = false;
-    let speechOutput = 'Atom is cleaning up';
+    let speechOutput = 'cleaning up';
 
     var today = new Date();
     let time = today.toLocaleString();
@@ -144,10 +144,10 @@ function cleanUp(callback, database) {
 
 function goHome(callback, database) {
     const cardTitle = 'Going Home';
-    let repromptText = 'Atom is going home';
+    let repromptText = '';
     let sessionAttributes = {};
     const shouldEndSession = false;
-    let speechOutput = 'Atom is going home';
+    let speechOutput = 'going home';
 
     var today = new Date();
     let time = today.toLocaleString();
@@ -162,10 +162,10 @@ function goHome(callback, database) {
 
 function speak(callback, database) {
     const cardTitle = 'Speak';
-    let repromptText = 'Atom is talking';
+    let repromptText = '';
     let sessionAttributes = {};
     const shouldEndSession = false;
-    let speechOutput = 'Atom is talking';
+    let speechOutput = '';
 
     var today = new Date();
     let time = today.toLocaleString();

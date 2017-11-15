@@ -20,20 +20,19 @@ class Command():
         self._drive.start()
         # Put the Create2 into 'safe' mode so we can drive it
         self._drive.safe()
+        # Play test sound to assure that we have at least gotten this far
+        self._drive.play_test_sound()
         mixer.init()
         mixer.music.set_volume(1.0)
         
     def cleanUp(self):
         # Inities the Clean Command
-        self._drive.stop()
         self._drive.clean()
 
     def goHome(self):
-        self._drive.stop()
         self._drive.seek_dock()
 	
     def doTricks(self, trick):
-        self._drive.stop()
         if trick == 1:
             # Tell the Create2 to drive straight forward at a speed of 100 mm/s
             self._drive.drive_straight(100)
