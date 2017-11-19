@@ -225,24 +225,22 @@ class Create2(object):
         self.SCI.send(self.config.data['opcodes']['full'], None)
         time.sleep(self.sleep_timer)
 
-	def wake(self):
-    		"""
-		Wake up robot. See OI spec, pg 7 under passive mode. This should reset
-		the 5 min timer in passive mode.
-
-		Unfortunately, if you are using the "offical" create cable ... it doesn't
-		work! They wired it wrong:
-		https://robotics.stackexchange.com/questions/7895/irobot-create-2-powering-up-after-sleep
-		"""
-		self.SCI.ser.rts = True
-		self.SCI.ser.dtr = True
-		time.sleep(1)
-		self.SCI.ser.rts = False
-		self.SCI.ser.dtr = False
-		time.sleep(1)
-		self.SCI.ser.rts = True
-		self.SCI.ser.dtr = True
-		time.sleep(1)  # Technically it should wake after 500ms.
+    def wake(self):
+        """Wake up robot. See OI spec, pg 7 under passive mode. This should reset
+           the 5 min timer in passive mode.
+           Unfortunately, if you are using the "offical" create cable ... it doesn't
+           work! They wired it wrong:
+           https://robotics.stackexchange.com/questions/7895/irobot-create-2-powering-up-after-sleep
+        """
+        self.SCI.ser.rts = True
+        self.SCI.ser.dtr = True
+        time.sleep(1)
+        self.SCI.ser.rts = False
+        self.SCI.ser.dtr = False
+        time.sleep(1)
+        self.SCI.ser.rts = True
+        self.SCI.ser.dtr = True
+        time.sleep(1)  # Technically it should wake after 500ms.
 
     def clean(self):
         self.SCI.send(self.config.data['opcodes']['clean'], None)
