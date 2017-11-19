@@ -19,7 +19,7 @@ class Command():
         # Start the Create2
         self._drive.start()
         # Wake the Create2 Up so it can do shit
-        self._drive.wake()
+        # self._drive.wake()
         # Put the Create2 into 'safe' mode so we can drive it
         self._drive.safe()
         # Play test sound to assure that we have at least gotten this far
