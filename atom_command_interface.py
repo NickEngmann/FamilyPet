@@ -16,7 +16,9 @@ class Command():
         """
         # Init instance of Create2 Controller
         self._drive = adt.Create2()
-        # Start the Create2
+        # Reset the Create2
+        # self._drive.reset()
+	# Start the Create2
         self._drive.start()
         # Wake the Create2 Up so it can do shit
         # self._drive.wake()
