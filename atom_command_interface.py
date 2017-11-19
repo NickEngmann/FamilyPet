@@ -35,6 +35,7 @@ class Command():
         self._drive.seek_dock()
 	
     def doTricks(self, trick):
+        print("reaching")
         if trick == 1:
             # Tell the Create2 to drive straight forward at a speed of 100 mm/s
             self._drive.drive_straight(100)
