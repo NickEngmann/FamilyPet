@@ -63,7 +63,6 @@ class Active(State):
     """
     The state which indicates that there are limited device capabilities.
     """
-    dir(State)
     def on_event(self, event):
         if event['command'] == 'tricks':
             return Tricks()
@@ -75,6 +74,8 @@ class Active(State):
             return speak()
         elif event['command'] == 'goHome':
             return goHome()
+        elif event['command'] == 'stop':
+            return Stop()
 
         time_passed = datetime.datetime.utcnow() - self._atom_state._started_at
         # if over 200 seconds have passed, place back in passive mode
@@ -84,6 +85,15 @@ class Active(State):
             return Standby()
         return self
 
+class Stop(State):
+    """
+    Stops whatever command is currently happening and return to standby.
+    """
+    def on_event(self, event):
+        resetStatus('standby')
+        self._atom_command_interface.stop()
+        return Standby()
+     
 class Tricks(State):
     """ 
     The state which indicates that there are no limitations on device
@@ -141,13 +151,40 @@ class cleanUp(State):
 
     def on_event(self, event):
         # Do cleanUp, reset to default state and then return to standby
-        print('Atom is cleaning up')
+        print('Atom is starting to clean up')
         self._atom_command_interface.cleanUp()
         x = randint(1, 26)    # Pick a random number between 1 and 26
         self._atom_command_interface.speak(x)
-        resetStatus('active')
+        resetStatus('cleaning')
         self._atom_state._started_at = resetTime()
-        return Active()
+        return cleaning()
+
+class cleaning(State):
+    """
+    The state which indicates that there are no limitations on device
+    capabilities.
+    """
+
+    def on_event(self, event):
+        print('Atom is cleaning up')
+        if event['command'] == 'tricks' or event['command'] == 'comeToMe' or event['command'] == 'goHome':
+            self._atom_command_interface.stop()
+            return Standby()
+        elif event['command'] == 'comeToMe':
+            return comeToMe()
+        elif event['command'] == 'goHome':
+            return goHome()
+        elif event['command'] == 'speak':
+            return speak()
+        elif event['command'] == 'stop':
+            return Stop()
+        time_passed = datetime.datetime.utcnow() - self._atom_state._started_at
+        # if over 200 seconds have passed, place back in passive mode
+        if time_passed.total_seconds() > 30:
+            resetStatus('standby')
+            self._atom_command_interface.stop()
+            return Standby()
+        return cleaning()
 
 
 class speak(State):
