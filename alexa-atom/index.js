@@ -178,6 +178,24 @@ function speak(callback, database) {
     });
 }
 
+function stop(callback, database) {
+    const cardTitle = 'Stop';
+    let repromptText = '';
+    let sessionAttributes = {};
+    const shouldEndSession = false;
+    let speechOutput = '';
+
+    var today = new Date();
+    let time = today.toLocaleString();
+    database.ref("status/").update({
+        command: 'stop',
+        timestamp: time
+    },() => { 
+        callback(sessionAttributes,
+            buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
+    });
+}
+
 function handleSessionEndRequest(callback) {
     //Saying Goodbye once a session ends
     const cardTitle = 'Session Ended';
@@ -228,6 +246,8 @@ function onIntent(intentRequest, session, database, callback) {
         goHome(callback, database);
     } else if (intentName === 'Speak') {
         speak(callback, database);
+    } else if (intentName === 'Stop') {
+        stop(callback, database);
     } else if (intentName === 'AMAZON.StopIntent' || intentName === 'AMAZON.CancelIntent') {
         handleSessionEndRequest(callback);
     } else {
