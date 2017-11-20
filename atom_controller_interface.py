@@ -14,8 +14,7 @@ atom_alexa = aai.Alexa()
 atom_state = astm.StateMachine(atom_alexa._state)
 
 while(1):
-    # polls the update_state
+    # polls the update_state and starts events
     status = atom_alexa.update_state()
-    # if status['command'] != 'standby' and status['command'] != 'active':
     atom_state.on_event(status)
 

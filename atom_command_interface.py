@@ -3,14 +3,15 @@ import atom_sound_interface as asi
 import atom_drive_train as adt
 import time
 from pygame import mixer
-"""
+
+""" 
 This is the command interface. Connects to the sound, wifi, and drain train interfaces
 """
 
 # initialize Firebase Application connection
 class Command():
     def __init__(self):
-        """
+        """ 
         Create an instance of Create2. This will automatically try to connect to your
         Roomba over serial
         """
@@ -18,26 +19,29 @@ class Command():
         self._drive = adt.Create2()
         # Reset the Create2
         # self._drive.reset()
-	# Start the Create2
-        self._drive.start()
-        # Wake the Create2 Up so it can do shit
-        # self._drive.wake()
-        # Put the Create2 into 'safe' mode so we can drive it
-        self._drive.safe()
         # Play test sound to assure that we have at least gotten this far
-        self._drive.play_test_sound()
         mixer.init()
         mixer.music.set_volume(1.0)
-        
+
+    def start(self):
+        # Put the Create2 into 'safe' mode so we can drive it
+        self._drive.start()
+        self._drive.safe()
+        self._drive.wake()
+
+    def stop(self):
+        self._drive.stop()
+
     def cleanUp(self):
         # Inities the Clean Command
         self._drive.clean()
 
     def goHome(self):
+        # heads back to charging dock
         self._drive.seek_dock()
-	
+
     def doTricks(self, trick):
-        print("reaching")
+        # picks a random trick and then does it
         if trick == 1:
             # Tell the Create2 to drive straight forward at a speed of 100 mm/s
             self._drive.drive_straight(100)
