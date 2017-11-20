@@ -16,6 +16,6 @@ atom_state = astm.StateMachine(atom_alexa._state)
 while(1):
     # polls the update_state
     status = atom_alexa.update_state()
-    if status['command'] != 'standby':
-        atom_state.on_event(status)
+    # if status['command'] != 'standby' and status['command'] != 'active':
+    atom_state.on_event(status)
 

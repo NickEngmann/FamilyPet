@@ -9,9 +9,9 @@ from random import *
 The State machine> Takes inputs and outputs to necessary state depending
 on the inputs
 """
-def resetStatus():
+def resetStatus(status):
     fb = firebase.FirebaseApplication("https://atom-pet.firebaseio.com", None)
-    data = {'command':'standby'}
+    data = {'command':status}
     result = fb.patch("/status", data)
 
 
@@ -50,6 +50,23 @@ class Standby(State):
 
     def on_event(self, event):
         if event['command'] == 'tricks':
+            return Active()
+        elif event['command'] == 'comeToMe':
+            return Active()
+        elif event['command'] == 'cleanUp':
+            return Active()
+        elif event['command'] == 'speak':
+            return Active()
+        elif event['command'] == 'goHome':
+            return Active()
+        return self
+
+class Active(State):
+    """
+    The state which indicates that there are limited device capabilities.
+    """
+    def on_event(self, event):
+        if event['command'] == 'tricks':
             return Tricks()
         elif event['command'] == 'comeToMe':
             return comeToMe()
@@ -60,7 +77,6 @@ class Standby(State):
         elif event['command'] == 'goHome':
             return goHome()
         return self
-
 
 class Tricks(State):
     """
@@ -74,8 +90,8 @@ class Tricks(State):
         x = randint(1, 4)    # Pick a random number between 1 and 4
         self._atom_command_interface.doTricks(x)
         self._atom_command_interface.speak(x)
-        resetStatus()
-        return Standby()
+        resetStatus('active')
+        return Active()
 
 
 class comeToMe(State):
@@ -90,8 +106,8 @@ class comeToMe(State):
         x = randint(1, 26)    # Pick a random number between 1 and 26
         self._atom_command_interface.speak(x)
         # TODO: Add in Danny's API to find and move towards
-        resetStatus()
-        return Standby()
+        resetStatus('active')
+        return Active()
 
 class goHome(State):
     """
@@ -105,8 +121,8 @@ class goHome(State):
         self._atom_command_interface.goHome()
         x = randint(1, 26)    # Pick a random number between 1 and 26
         self._atom_command_interface.speak(x)
-        resetStatus()
-        return Standby()
+        resetStatus('active')
+        return Active()
 
 class cleanUp(State):
     """
@@ -120,8 +136,8 @@ class cleanUp(State):
         self._atom_command_interface.cleanUp()
         x = randint(1, 26)    # Pick a random number between 1 and 26
         self._atom_command_interface.speak(x)
-        resetStatus()
-        return Standby()
+        resetStatus('active')
+        return Active()
 
 
 class speak(State):
@@ -135,8 +151,8 @@ class speak(State):
         print('Atom is speaking')
         x = randint(1, 26)    # Pick a random number between 1 and 26
         self._atom_command_interface.speak(x)
-        resetStatus()
-        return Standby()
+        resetStatus('active')
+        return Active()
 
 
 class StateMachine(object):
@@ -155,6 +171,7 @@ class StateMachine(object):
         x = randint(1, 26)    # Pick a random number between 1 and 26
         self._state._atom_command_interface.speak(x)
         self._state._atom_state = state
+        self._state._atom_state._activity = True
 
  
     def on_event(self, event):
