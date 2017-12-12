@@ -1,8 +1,7 @@
 # FamilyPet
 The Ortega and Engmann households family pet. A hacked and redesigned Roomba to support Alexa command control, orientation and owner tracking, and environment control.
 Click the image below to watch the video.
-![Watch the video](https://github.com/NickEngmann/FamilyPet/blob/Atom/imgs/youtube.png)
-(https://youtu.be/eTrfuwPI7Rg)
+[![Watch the video](https://github.com/NickEngmann/FamilyPet/blob/Atom/imgs/youtube.png)](https://youtu.be/eTrfuwPI7Rg)
 
 # Installation
 
