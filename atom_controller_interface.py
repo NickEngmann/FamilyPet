@@ -15,7 +15,7 @@ atom_state = astm.StateMachine(atom_alexa._state)
 
 while(1):
     # polls the update_state and starts events
-    time.sleep(2)
+    time.sleep(1)
     status = atom_alexa.update_state()
     atom_state.on_event(status)
 
