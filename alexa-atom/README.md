@@ -20,4 +20,4 @@ config = {
   }
 ```
 
-Package everything as a .zip file and store it in your Amazon Lambda service
+Package everything as a .zip file and store it in your Amazon Lambda service.
