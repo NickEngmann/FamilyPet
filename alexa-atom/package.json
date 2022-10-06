@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "alexa-sdk": "^1.0.9",
-    "firebase": "^4.6.0"
+    "firebase": "^8.0.1"
   }
 }
