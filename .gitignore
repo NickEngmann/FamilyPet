@@ -3,3 +3,19 @@ config.json
 __pycache__
 .vscode
 node_modules
+
+# Auto-added by Marisol pipeline
+.env
+.cache/
+build/
+*.pyc
+.pytest_cache/
+debug_*.py
+dist/
+*.egg-info/
+*.o
+*.so
+.pio/
+.gradle/
+*.class
+local.properties
