@@ -26,6 +26,8 @@ class State(object):
     def __init__(self):
         print ('Processing current state:', str(self))
         self._started_at = datetime.datetime.utcnow()
+        self.name = self.__class__.__name__
+        self._atom_command_interface = acmdi.AtomCommandInterface()
 
     def on_event(self, event):
         """ 
@@ -162,7 +164,7 @@ class cleaning(State):
 
     def on_event(self, event):
         print('Cleaning')
-        elif event['command'] == 'comeToMe':
+        if event['command'] == 'comeToMe':
             return comeToMe()
         elif event['command'] == 'goHome':
             return goHome()
@@ -199,11 +201,11 @@ class StateMachine(object):
     high level.
     """
 
-    def __init__(self, state):
+    def __init__(self, state=None):
         """ Initialize the components. """
 
         # Start with a default state.
-        self._state = Standby()
+        self._state = Standby() if state is None else state
         # Pass the defaults through
         self._state._atom_command_interface = acmdi.Command()
         x = randint(1, 26)    # Pick a random number between 1 and 26
@@ -228,3 +230,36 @@ class StateMachine(object):
 
         # passes necessary information to the next state
         self._state = next_state
+
+    def transition(self, new_state):
+        """Transition to a new state directly."""
+        new_state._atom_state = self._state._atom_state
+        new_state._atom_command_interface = self._state._atom_command_interface
+        self._state = new_state
+
+    def update(self):
+        """Update the current state (call on_event with no event)."""
+        # Simulate an update by calling on_event with an empty event
+        # This allows the state to process its own logic
+        pass
+
+
+class Dock(State):
+    """
+    The state when the device is docking
+    """
+    pass
+
+
+class Search(State):
+    """
+    The state when the device is searching
+    """
+    pass
+
+
+class Clean(State):
+    """
+    The state when the device is cleaning
+    """
+    pass
