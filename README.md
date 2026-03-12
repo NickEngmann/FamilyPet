@@ -1,5 +1,6 @@
 # FamilyPet
-The Ortega and Engmann households family pet. A hacked and redesigned Roomba to support Alexa command control, orientation and owner tracking, and environment control. </br>
+The Ortega and Engmann households family pet. A hacked and redesigned Roomba to support Alexa command control, orientation and owner tracking, and environment control.
+
 Click the image below to watch the video.
 [![Watch the video](https://github.com/NickEngmann/FamilyPet/blob/Atom/imgs/youtube.png)](https://youtu.be/eTrfuwPI7Rg)
 
@@ -124,6 +125,70 @@ Running
 python3 atom_controller_interface.py
 ```
 
+## Testing
+
+### Test Framework
+- **Framework**: pytest
+- **Test Command**: `pytest`
+- **Hardware Mocks**: Required for testing without physical Roomba
+- **Known Issues**: Some tests may fail after implementation changes
+
+### Running Tests
+```bash
+# Install test dependencies
+pip install pytest
+
+# Run all tests
+pytest
+
+# Run specific test file
+pytest tests/test_atom_state_machine.py
+```
+
+### Test Infrastructure
+- Tests require hardware mocks for Roomba Create 2 interface
+- Use embedded_mocks.py for hardware simulation
+- Firebase connections should be mocked in tests
+- Mock architecture needed for CI/CD pipeline testing
+
+## Build & Run
+
+### Build System
+- **Language**: Python 3.x
+- **Framework**: None (custom Roomba control)
+- **Docker image**: lotus-rpi-python:latest
+- **Dependencies**: pygame, firebase, serial (pyserial)
+
+### Installation
+```bash
+# Install Python dependencies
+python3 -m pip install python-firebase
+python3 -m pip install requests
+python3 -m pip install pygame
+
+# Setup I2C on Raspberry Pi
+# Follow: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c
+
+# Clone repository
+cd ~
+git clone https://github.com/NickEngmann/FamilyPet
+
+# Generate config file
+python configGenerator.py
+```
+
+### Running the Application
+```bash
+# Main controller interface
+python3 atom_controller_interface.py
+
+# State machine
+python3 atom_state_machine.py
+
+# Drive train (requires hardware)
+python3 atom_drive_train.py
+```
+
 Model
 ============
 # Want to make your own shell for your Roomba?
@@ -134,28 +199,6 @@ License
 ============
 The MIT License
 
-Copyright (c) 2004-2018 Quod Certamine
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-<<<<<<< HEAD
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-=======
 ## License
 
 (The MIT License)
@@ -165,4 +208,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
->>>>>>> 9bf9012f303e5ade168b21c1d0e0d55e25495708
